@@ -80,8 +80,21 @@ class Disassembler {
           print("$prefix ${mnemsame[opcode]} ${reg_names[reg1]}");
         }
       } else {
-        String r2 = reg2 == 3 ? hex(imm) : reg_names[reg2];
-        print("$prefix ${mnem[opcode]} ${reg_names[reg1]} $r2");
+	if (opcode == SUB && reg2 == 3 && imm < 0) {
+	  // For negative immediate sub, print add instead.
+	  print("$prefix add ${reg_names[reg1]} ${hex(-imm)}");
+	} else {
+	  String r1;
+	  if (opcode == ADD && reg2 == 3) {
+	    // Immediate adds use alternative registers (use immediate sub
+	    // instead).
+	    r1 = <String>["pc", "sp", "status"][reg1];
+	  } else {
+	    r1 = reg_names[reg1];
+	  }
+	  String r2 = reg2 == 3 ? hex(imm) : reg_names[reg2];
+	  print("$prefix ${mnem[opcode]} $r1 $r2");
+	}
       }
     } else if ((bytecode & 0xcc) == 0xcc) {
       if (reg2 != 3) {

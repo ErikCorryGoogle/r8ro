@@ -51,6 +51,28 @@ class CPU {
   List unaries;
   List<String> cond_name_list;
 
+  void push(int x) {
+    sp -= 2;
+    memory.store16(sp, x);
+  }
+
+  void push8(int x) {
+    sp -= 1;
+    memory.store8(sp, x);
+  }
+
+  int pop() {
+    int result = memory.load16(sp);
+    sp += 2;
+    return result;
+  }
+
+  int pop8() {
+    int result = memory.load8(sp);
+    sp += 2;
+    return result;
+  }
+
   int reg_get(int reg) {
     switch (reg) {
       case RA:

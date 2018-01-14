@@ -1,6 +1,7 @@
 import 'cpu.dart';
 import 'memory.dart';
 import 'mnemonics.dart';
+import 'util.dart';
 
 class Label {
   Label(this.memory, this.name);
@@ -184,6 +185,8 @@ class Assembler {
   Map<int, List<String>> lookup = new Map<int, List<String>>();
 
   int lookupSymbol(String name) => global_labels[name].address;
+  Label getLabel(String name) => global_labels[name];
+  bool hasSymbol(String name) => global_labels.containsKey(name);
 
   void set_line_break(int prev, int next) {
     if (prev != null) just_before_newline = prev;
@@ -797,6 +800,14 @@ class Assembler {
     return;
   }
 
+  void addUnboundLabel(String s) {
+    global_labels.putIfAbsent(s, () => new Label(memory, s));
+  }
+
+  Iterable<String> unboundLabels() {
+    return global_labels.keys.where((l) => !global_labels[l].bound);
+  }
+
   void parsePushPop() {
     int memop = 0;
     if (current == "pop" || current == "pop8") {
@@ -916,9 +927,6 @@ class Assembler {
 
   void finish() {
     for (Label label in local_labels.values) {
-      if (!label.bound) throw "Never bound ${label.name}";
-    }
-    for (Label label in global_labels.values) {
       if (!label.bound) throw "Never bound ${label.name}";
     }
   }

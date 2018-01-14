@@ -49,6 +49,7 @@ class CanvasScreen extends R8roScreen {
       for (int x = 0; x < 320; x++) {
 	if (repeats == 0) {
 	  pixels = mem.load16(sprite);
+	  print("pixels ${hex(pixels)}");
 	  sprite += 2;
 	  repeats = (1 + (pixels & 0xf)) << 2;
 	}

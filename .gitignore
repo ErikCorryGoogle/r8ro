@@ -1,0 +1,6 @@
+*.swp
+*.swo
+.packages
+.pub
+build
+pubspec.lock

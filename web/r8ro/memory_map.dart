@@ -1,3 +1,11 @@
+const zeroPageStart = 0;
+const zeroPageEnd = 128;
+
+const screenInterruptVector = 0xfffc;
+const keyboardInterruptVector = 0xfffa;
+
+const stackEnd = 4 * 256;
+
 // Screen memory starts at 22k and goes to about 32k by default, but
 // programmable.
 const screenStart = 1024 * 22;
@@ -10,6 +18,11 @@ const screenModeStart = 8 * 256;
 const screenModeEnd = 8 * 256 + 64;
 const screenPalateStart = screenModeEnd;  // 14 or 16 entries.
 const screenPalateEnd = screenPalateStart + 16;
+const softwareSpriteScratchStart = screenPalateEnd;
+
+// 2.5k of font ROM.
+const fontRomStart = 256 * 245;
+const fontRomEnd = 256 * 255;
 
 // For default mode (320x256, 1 bit).
 const bytesPerLine = 320 ~/ 8;
@@ -18,6 +31,3 @@ const textLines = 23;
 const lines = 256;
 // 1B8 for 11 lines per char. = 1 10111000 - 23 lines
 
-// 2.5k of font ROM.
-const fontRomStart = 256 * 245;
-const fontRomEnd = 256 * 255;
